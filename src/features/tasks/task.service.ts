@@ -17,6 +17,7 @@ const TASKS_COLLECTION = "tasks";
 interface CreateTaskData {
     title: string;
     description: string;
+    priority: "low" | "medium" | "high";
     dueDate: string;
     userId: string;
 }
@@ -24,9 +25,8 @@ interface CreateTaskData {
 type UpdateTaskData = UpdateData<Omit<Task, "id">>;
 
 export const subscribeToUserTasks = (
-
     userId: string,
-    onTaskChange: (tasks: Task[]) => void,
+    onTasksChange: (tasks: Task[]) => void,
     onError: (error: Error) => void
 ): Unsubscribe => {
     const tasksRef = collection(db, TASKS_COLLECTION);
@@ -42,7 +42,7 @@ export const subscribeToUserTasks = (
 
             tasks.sort((a, b) => b.createdAt - a.createdAt);
 
-            onTaskChange(tasks);
+            onTasksChange(tasks);
         },
         (error) => {
             onError(error);
@@ -54,6 +54,7 @@ export const createTask = async (data: CreateTaskData) => {
     await addDoc(collection(db, TASKS_COLLECTION), {
         title: data.title,
         description: data.description,
+        priority: data.priority,
         dueDate: data.dueDate,
         userId: data.userId,
         completed: false,
@@ -68,5 +69,5 @@ export const updateTask = async (taskId: string, data: UpdateTaskData) => {
 
 export const deleteTask = async (taskId: string) => {
     const taskRef = doc(db, TASKS_COLLECTION, taskId);
-    await deleteDoc(taskRef)
-}
+    await deleteDoc(taskRef);
+};

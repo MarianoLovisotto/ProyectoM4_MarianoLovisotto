@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { loginUser } from ".."
-import { getFirebaseAuthErrorMessage } from
+import {
+    loginUser,
+    signInWithGoogle,
+} from "../features/auth/auth.service";
+import { getFirebaseAuthErrorMessage } from "../utils/firebaseErrors";
 
 export function LoginPage() {
     const [email, setEmail] = useState("");
@@ -17,9 +20,19 @@ export function LoginPage() {
         try {
             await loginUser(email, password);
         } catch (error) {
-            setErrorMessage(getFirebaseAuthErrorMessage)
+            setErrorMessage(getFirebaseAuthErrorMessage(error));
         } finally {
-            setIsSubmitting(false)
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        setErrorMessage("");
+
+        try {
+            await signInWithGoogle();
+        } catch (error) {
+            setErrorMessage(getFirebaseAuthErrorMessage(error));
         }
     };
 
@@ -42,7 +55,8 @@ export function LoginPage() {
                     type="password"
                     placeholder="Contraseña"
                     value={password}
-                    onChange={(event => setPassword(event.target.value))}
+                    onChange={(event) => setPassword(event.target.value)}
+                    required
                 />
 
                 {errorMessage && <p>{errorMessage}</p>}
@@ -51,7 +65,18 @@ export function LoginPage() {
                     {isSubmitting ? "Ingresando..." : "Entrar"}
                 </button>
 
+                <div className="auth-divider">
+                    <span>o</span>
+                </div>
+
+                <button
+                    className="btn-secondary"
+                    type="button"
+                    onClick={handleGoogleLogin}
+                >
+                    Continuar con Google
+                </button>
             </form>
         </section>
-    )
+    );
 }
