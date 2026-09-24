@@ -1,11 +1,14 @@
-import { useState } from "react"
-import { registerUser } from "../"
-import { getFirebaseAuthErrorMessage } from ".."
+import { useState } from "react";
+import {
+    registerUser,
+    signInWithGoogle,
+} from "../features/auth/auth.service";
+import { getFirebaseAuthErrorMessage } from "../utils/firebaseErrors";
 
 export function RegisterPage() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [errorMessage, setErrorMessage] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -17,9 +20,19 @@ export function RegisterPage() {
         try {
             await registerUser(email, password);
         } catch (error) {
-            setErrorMessage(getFirebaseAuthErrorMessage)
+            setErrorMessage(getFirebaseAuthErrorMessage(error));
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    const handleGoogleRegister = async () => {
+        setErrorMessage("");
+
+        try {
+            await signInWithGoogle();
+        } catch (error) {
+            setErrorMessage(getFirebaseAuthErrorMessage(error));
         }
     };
 
@@ -31,10 +44,11 @@ export function RegisterPage() {
                 <input
                     className="input"
                     type="email"
-                    placeholder="Correo electronico"
+                    placeholder="Correo electrónico"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    required />
+                    required
+                />
 
                 <input
                     className="input"
@@ -51,9 +65,20 @@ export function RegisterPage() {
                 <button className="btn-primary" type="submit" disabled={isSubmitting}>
                     {isSubmitting ? "Creando cuenta..." : "Registrarme"}
                 </button>
+
+                <div className="auth-divider">
+                    <span>o</span>
+                </div>
+
+                <button
+                    className="btn-secondary"
+                    type="button"
+                    onClick={handleGoogleRegister}
+                >
+                    Continuar con Google
+                </button>
             </form>
         </section>
-    )
-
+    );
 }
 

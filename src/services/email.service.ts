@@ -20,8 +20,8 @@ export const sendTaskSummary = async (
     });
 
     if (!response.ok) {
-        throw new Error("No se puede enviar el resumen.");
+        throw new Error("No se pudo enviar el resumen.");
     }
 
-    return response.json
-}
+    return response.json();
+};
