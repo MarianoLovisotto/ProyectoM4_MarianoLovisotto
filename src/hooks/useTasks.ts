@@ -3,7 +3,7 @@ import { subscribeToUserTasks, createTask, updateTask, deleteTask } from "../fea
 import { useAuth } from "./useAuth";
 import type { Task } from "../types/Task";
 
-export const useTask = () => {
+export const useTasks = () => {
     const { user, loading: authLoading } = useAuth()
 
     const [tasks, setTasks] = useState<Task[]>([]);
