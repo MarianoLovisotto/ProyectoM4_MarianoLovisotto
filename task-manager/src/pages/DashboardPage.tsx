@@ -70,14 +70,14 @@ export function DashboardPage() {
         setIsSendingEmail(true);
 
         try {
-            await sendTaskSummary({
+            const result = await sendTaskSummary({
                 email: user.email,
                 tasks,
             });
 
-            setEmailStatus("Resumen enviado correctamente.");
-        } catch {
-            setEmailStatus("No se pudo enviar el resumen.");
+            setEmailStatus(result?.message || "Resumen enviado correctamente.");
+        } catch (error: any) {
+            setEmailStatus(error?.message || "No se pudo enviar el resumen.");
         } finally {
             setIsSendingEmail(false);
         }

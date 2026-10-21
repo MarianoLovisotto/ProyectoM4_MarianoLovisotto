@@ -19,9 +19,11 @@ export const sendTaskSummary = async (
         }),
     });
 
+    const result = await response.json().catch(() => null);
+
     if (!response.ok) {
-        throw new Error("No se pudo enviar el resumen.")
+        throw new Error(result?.message || "No se pudo enviar el resumen.");
     }
 
-    return response.json();
+    return result;
 };

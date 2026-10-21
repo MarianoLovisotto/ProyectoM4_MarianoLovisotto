@@ -1,331 +1,848 @@
-* {
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   DESIGN TOKENS & SYSTEM VARIABLES
+   Inspired by modern dark mode UI with high-contrast pastel accent cards
+   ========================================================================== */
+:root {
+  /* Canvas & Dark Theme */
+  --bg-canvas: #0d131d;
+  --bg-shell: #141d2c;
+  --surface-card: #1b2638;
+  --surface-card-hover: #223046;
+  --surface-input: #101723;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-card: #27374e;
+  --border-focus: #d2f28b;
+
+  /* Typography */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+  /* Brand Accents */
+  --accent-lime: #d2f28b;
+  --accent-lime-hover: #c4e879;
+  --accent-cyan: #35c2f0;
+  --accent-cyan-hover: #21b2e2;
+  --accent-lavender: #d7c5e2;
+  --accent-mint: #def294;
+  --accent-danger: #f87171;
+  --accent-danger-bg: rgba(239, 68, 68, 0.15);
+
+  /* Elevation & Shadows */
+  --shadow-shell: 0 24px 60px -15px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 50px rgba(53, 194, 240, 0.06);
+  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+  --shadow-card-hover: 0 18px 35px -8px rgba(0, 0, 0, 0.45);
+  --shadow-pill: 0 4px 16px rgba(210, 242, 139, 0.25);
+
+  /* Radii */
+  --radius-shell: 32px;
+  --radius-card: 24px;
+  --radius-input: 14px;
+  --radius-pill: 9999px;
+}
+
+/* ==========================================================================
+   GLOBAL RESET & BASE STYLES
+   ========================================================================== */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-:root {
-  --bg: #0f172a;
-  --surface: #1e293b;
-  --surface-hover: #273449;
-  --border: #334155;
-  --primary: #7c4dff;
-  --primary-hover: #9166ff;
-  --text: #f8fafc;
-  --text-muted: #94a3b8;
-  --danger: #ef4444;
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  font-size: 16px;
 }
 
 body {
   margin: 0;
-  font-family: Inter, system-ui, sans-serif;
-  color: var(--text);
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px,
-      transparent 1px),
-    linear-gradient(90deg,
-      rgba(255, 255, 255, 0.035) 1px,
-      transparent 1px),
-    radial-gradient(circle at top left,
-      rgba(124, 77, 255, 0.16),
-      transparent 32%),
-    radial-gradient(circle at bottom right,
-      rgba(168, 85, 247, 0.12),
-      transparent 30%),
-    var(--bg);
-  background-size:
-    42px 42px,
-    42px 42px,
-    cover,
-    cover,
-    cover;
+  padding: 0;
+  min-height: 100vh;
+  font-family: var(--font-main);
+  background-color: var(--bg-canvas);
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(53, 194, 240, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(210, 242, 139, 0.08) 0%, transparent 45%),
+    linear-gradient(180deg, rgba(20, 29, 44, 0.6) 0%, rgba(13, 19, 29, 0.95) 100%);
   background-attachment: fixed;
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #27374e;
+  border-radius: var(--radius-pill);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #374b67;
+}
+
+/* ==========================================================================
+   DESKTOP & RESPONSIVE APP SHELL
+   Expanded horizontal space on desktop while retaining mobile elegance
+   ========================================================================== */
 .app-layout {
-  width: min(760px, 100%);
-  margin: 0 auto;
-  padding: 1.25rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 2.5rem auto;
+  padding: 2.25rem 2.5rem;
+  background-color: var(--bg-shell);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-shell);
+  box-shadow: var(--shadow-shell);
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 1.5rem;
+  position: relative;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
+/* ==========================================================================
+   DASHBOARD HEADER
+   ========================================================================== */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .dashboard-header h1 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.95rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
 }
 
 .subtitle {
-  margin: 0.4rem 0;
-  color: var(--text-muted);
-  font-size: 0.95rem;
+  margin: 0.35rem 0 0.55rem;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.45;
 }
 
 .user-email {
-  color: var(--text-muted);
-  font-size: 0.85rem;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
+.user-email::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-lime);
+  box-shadow: 0 0 10px var(--accent-lime);
+}
+
+/* ==========================================================================
+   STATS CARDS (Capsule & Calendar Pill Aesthetic)
+   ========================================================================== */
 .stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  gap: 1.25rem;
 }
 
 .stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 0.85rem 1rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 1.35rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* First card (Pendientes) accent glow */
+.stat-card:first-child::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle at top right, rgba(53, 194, 240, 0.25), transparent 70%);
+}
+
+/* Second card (Completadas) accent glow */
+.stat-card:last-child::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle at top right, rgba(210, 242, 139, 0.25), transparent 70%);
 }
 
 .stat-card span {
-  display: block;
-  color: var(--text-muted);
-  margin-bottom: 0.3rem;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
 }
 
 .stat-card strong {
-  font-size: 1.4rem;
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
-.email-card,
-.task-form,
-.task-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1rem;
+.stat-card:last-child strong {
+  color: var(--accent-lime);
 }
 
+/* ==========================================================================
+   EMAIL SUMMARY CARD (Horizontal desktop layout)
+   ========================================================================== */
 .email-card {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 1.35rem 1.75rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1.5rem;
+  position: relative;
+  box-shadow: var(--shadow-card);
+  flex-wrap: wrap;
 }
 
-.email-card h2,
-.task-form h2 {
+.email-card > div {
+  flex: 1;
+  min-width: 250px;
+}
+
+.email-card h2 {
   margin: 0 0 0.35rem;
   font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .email-card p {
   margin: 0;
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.45;
 }
 
-.status-message {
-  grid-column: 1 / -1;
-  margin: 0.2rem 0 0;
-  color: var(--text-muted);
-  font-size: 0.9rem;
+.email-card .btn-primary {
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: var(--accent-cyan);
+  color: #072230;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(53, 194, 240, 0.28);
 }
 
-.error-message {
-  color: var(--danger);
+.email-card .btn-primary:hover:not(:disabled) {
+  background: var(--accent-cyan-hover);
+  box-shadow: 0 8px 24px rgba(53, 194, 240, 0.4);
 }
 
+.email-card .status-message {
+  width: 100%;
+}
+
+/* ==========================================================================
+   TASK FORM ("Nueva tarea" - 2 Column Balanced Desktop Grid)
+   ========================================================================== */
 .task-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 1.6rem 1.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  box-shadow: var(--shadow-card);
+}
+
+.task-form h2 {
+  grid-column: 1 / -1;
+  margin: 0 0 0.15rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.task-form input[type="text"] {
+  grid-column: 1 / -1;
+}
+
+.task-form .textarea {
+  grid-column: 1 / -1;
+  min-height: 85px;
+  resize: vertical;
+}
+
+.task-form select.input {
+  grid-column: 1 / 2;
+}
+
+.task-form input[type="date"] {
+  grid-column: 2 / 3;
+}
+
+.task-form p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--accent-danger);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.task-form .btn-primary {
+  grid-column: 1 / -1;
+  justify-self: end;
+  min-width: 180px;
 }
 
 .input,
 .textarea {
   width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  background: #111827;
-  color: var(--text);
-  padding: 0.7rem 0.8rem;
-  font-size: 0.95rem;
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--radius-input);
+  background: var(--surface-input);
+  color: var(--text-primary);
+  padding: 0.8rem 1rem;
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.textarea {
-  min-height: 80px;
-  resize: vertical;
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
 }
 
 .input:focus,
 .textarea:focus {
   outline: none;
-  border-color: var(--primary);
+  border-color: var(--border-focus);
+  background: #141c2a;
+  box-shadow: 0 0 0 3px rgba(210, 242, 139, 0.15);
 }
 
+select.input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 14px;
+  padding-right: 2.5rem;
+}
+
+/* Date picker appearance */
+input[type="date"].input {
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   BUTTON SYSTEM
+   ========================================================================== */
 .btn-primary,
 .btn-secondary {
   border: none;
-  border-radius: 11px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-main);
   font-size: 0.9rem;
-  padding: 0.7rem 0.95rem;
+  font-weight: 700;
+  padding: 0.75rem 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #7c4dff, #a855f7);
-  color: white;
-  box-shadow: 0 10px 24px rgba(124, 77, 255, 0.22);
+  background: var(--accent-lime);
+  color: #121e2a;
+  box-shadow: var(--shadow-pill);
 }
 
-.btn-primary:hover {
-  background: linear-gradient(135deg, #8b5cf6, #b86bff);
-  transform: translateY(-1px);
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-lime-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(210, 242, 139, 0.4);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .btn-secondary {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-card);
+  color: var(--text-primary);
+  padding: 0.6rem 1.15rem;
+  font-size: 0.84rem;
 }
 
-.btn-secondary:hover {
-  background: var(--surface-hover);
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-card-hover);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
 }
 
+.btn-secondary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================================================
+   FILTER SECTION & BAR (Calendar Pills Aesthetic from Reference)
+   ========================================================================== */
+section h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.filter-bar {
+  display: flex;
+  gap: 0.65rem;
+  overflow-x: auto;
+  padding: 0.25rem 0;
+  scrollbar-width: none;
+  flex-wrap: wrap;
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-btn {
+  border: 1px solid var(--border-card);
+  background: var(--surface-card);
+  color: var(--text-secondary);
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-main);
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  background: var(--surface-card-hover);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+/* Active filter matches the prominent "12 Wed" pill in the mock */
+.filter-btn.active {
+  background: var(--accent-lime);
+  border-color: var(--accent-lime);
+  color: #121e2a;
+  font-weight: 800;
+  box-shadow: var(--shadow-pill);
+}
+
+/* ==========================================================================
+   TASK LIST & CARDS
+   Timeline connector & colored pastel cards with ample horizontal width
+   ========================================================================== */
 .task-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 1.25rem;
+  position: relative;
+  padding-left: 2rem;
+}
+
+/* Left dashed timeline guide inspired directly by the reference image */
+.task-list::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  bottom: 25px;
+  left: 9px;
+  width: 2px;
+  border-left: 2px dashed rgba(148, 163, 184, 0.3);
+}
+
+/* Card color schemes directly inspired by reference cards */
+/* 1st Card: Pastel Pistachio / Lime ("Completed") */
+.task-card:nth-child(4n + 1) {
+  --card-bg: #d2f28b;
+  --card-text: #121e2a;
+  --card-text-muted: #2f4458;
+  --card-btn-primary-bg: #141f2c;
+  --card-btn-primary-text: #ffffff;
+  --timeline-dot: #d2f28b;
+}
+
+/* 2nd Card: Vibrant Electric Azure / Cyan ("Rejected") */
+.task-card:nth-child(4n + 2) {
+  --card-bg: #35c2f0;
+  --card-text: #082130;
+  --card-text-muted: #1c4964;
+  --card-btn-primary-bg: #092131;
+  --card-btn-primary-text: #ffffff;
+  --timeline-dot: #35c2f0;
+}
+
+/* 3rd Card: Soft Lavender / Lilac ("Running") */
+.task-card:nth-child(4n + 3) {
+  --card-bg: #d7c5e2;
+  --card-text: #21162d;
+  --card-text-muted: #4e3963;
+  --card-btn-primary-bg: #231731;
+  --card-btn-primary-text: #ffffff;
+  --timeline-dot: #d7c5e2;
+}
+
+/* 4th Card: Soft Pale Lemon-Mint ("Upcoming") */
+.task-card:nth-child(4n + 4) {
+  --card-bg: #def294;
+  --card-text: #17241c;
+  --card-text-muted: #3d5245;
+  --card-btn-primary-bg: #16241a;
+  --card-btn-primary-text: #ffffff;
+  --timeline-dot: #def294;
 }
 
 .task-card {
-  transition: transform 0.2s ease, background 0.2s ease;
+  position: relative;
+  background: var(--card-bg, #d2f28b);
+  color: var(--card-text, #121e2a);
+  border-radius: var(--radius-card);
+  padding: 1.45rem 1.75rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  overflow: visible;
 }
 
 .task-card:hover {
-  transform: translateY(-2px);
-  background: var(--surface-hover);
+  transform: translateY(-3px) scale(1.005);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Timeline dot connecting card to the dashed timeline */
+.task-card::before {
+  content: "";
+  position: absolute;
+  left: -2rem;
+  top: 28px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--timeline-dot, #d2f28b);
+  border: 3.5px solid var(--bg-shell);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  transform: translateX(-50%);
+  z-index: 2;
+  transition: transform 0.2s ease;
+}
+
+.task-card:hover::before {
+  transform: translateX(-50%) scale(1.3);
+}
+
+/* Task Header & Typography */
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.45rem;
 }
 
 .task-card h3 {
-  margin: 0 0 0.35rem;
-  font-size: 1rem;
+  margin: 0;
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: var(--card-text, #121e2a);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
 .task-card p {
-  margin: 0.2rem 0;
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  margin: 0.4rem 0 0.85rem;
+  color: var(--card-text-muted, #2f4458);
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
+.due-date {
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  color: var(--card-text-muted, #2f4458) !important;
+  margin: 0.25rem 0 0.6rem !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  background: rgba(18, 30, 42, 0.08);
+  border-radius: var(--radius-pill);
+}
+
+/* ==========================================================================
+   BADGES (Sleek dark pills matching top-left tabs in reference)
+   ========================================================================== */
+.badge-group {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.status-badge,
+.priority-badge {
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Status Badges */
+.status-badge.completed {
+  background: #121d2a;
+  color: var(--accent-lime);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.status-badge.pending {
+  background: rgba(18, 30, 42, 0.14);
+  color: var(--card-text, #121e2a);
+  border: 1px solid rgba(18, 30, 42, 0.22);
+}
+
+/* Priority Badges */
+.priority-badge.high {
+  background: rgba(220, 38, 38, 0.2);
+  color: #881337;
+  border: 1px solid rgba(136, 19, 55, 0.25);
+}
+
+.priority-badge.medium {
+  background: rgba(245, 158, 11, 0.2);
+  color: #78350f;
+  border: 1px solid rgba(120, 53, 15, 0.25);
+}
+
+.priority-badge.low {
+  background: rgba(37, 99, 235, 0.2);
+  color: #1e3a8a;
+  border: 1px solid rgba(30, 58, 138, 0.25);
+}
+
+/* ==========================================================================
+   TASK CARD ACTIONS
+   ========================================================================== */
 .task-card button {
-  padding: 0.45rem 0.75rem;
-  border-radius: 8px;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-pill);
   border: none;
   cursor: pointer;
-  margin-top: 0.55rem;
-  margin-right: 0.45rem;
-  font-size: 0.82rem;
-  transition: 0.2s;
+  margin-top: 0.45rem;
+  margin-right: 0.5rem;
+  font-family: var(--font-main);
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Primary Action: Marcar completada / toggle */
 .task-card button:first-of-type {
-  background: #7c4dff;
-  color: white;
+  background: var(--card-btn-primary-bg, #141f2c);
+  color: var(--card-btn-primary-text, #ffffff);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+.task-card button:first-of-type:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.32);
+  filter: brightness(1.2);
+}
+
+.task-card button:first-of-type:active {
+  transform: scale(0.97);
+}
+
+/* Secondary Action: Eliminar */
 .task-card button:last-of-type {
-  background: #ef4444;
-  color: white;
+  background: rgba(18, 30, 42, 0.12);
+  color: var(--card-text, #121e2a);
+  border: 1px solid rgba(18, 30, 42, 0.22);
 }
 
-.task-card button:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.task-card button:last-of-type:hover {
+  background: #e11d48;
+  color: #ffffff;
+  border-color: #e11d48;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(225, 29, 72, 0.35);
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
+.task-card button:last-of-type:active {
+  transform: scale(0.97);
 }
 
+/* ==========================================================================
+   STATUS & ERROR MESSAGES
+   ========================================================================== */
+.status-message {
+  margin: 0.4rem 0;
+  padding: 0.75rem 1.1rem;
+  border-radius: var(--radius-input);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.error-message {
+  color: var(--accent-danger);
+  background: var(--accent-danger-bg);
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+/* Empty state styling */
+.task-list + p,
+main > p {
+  background: var(--surface-card);
+  border: 1px dashed var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1rem 0;
+}
+
+/* ==========================================================================
+   AUTH LAYOUT & CARDS (Login & Register)
+   ========================================================================== */
 .auth-layout {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: var(--bg-canvas);
+  background-image:
+    radial-gradient(circle at 50% 20%, rgba(53, 194, 240, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(210, 242, 139, 0.08) 0%, transparent 50%);
 }
 
 .auth-card {
-  width: min(380px, 100%);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  padding: 2rem;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-shell);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-shell);
+  padding: 2.5rem 2.25rem;
+  box-shadow: var(--shadow-shell);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  position: relative;
+  overflow: hidden;
 }
 
 .auth-header {
-  margin-bottom: 1.25rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 .auth-header h1 {
   margin: 0;
-  font-size: 1.85rem;
+  font-size: 1.95rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
 }
 
 .auth-header p {
-  color: var(--text-muted);
-  font-size: 0.95rem;
-}
-
-.auth-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.auth-card h1,
-.auth-card h2 {
-  margin-top: 0;
-}
-
-.link-button {
-  width: 100%;
-  margin-top: 1rem;
-  background: transparent;
-  border: none;
-  color: var(--primary-hover);
-  cursor: pointer;
-  font-weight: 600;
-}
-
-@media (max-width: 700px) {
-  .app-layout {
-    padding: 1rem;
-  }
-
-  .dashboard-header {
-    flex-direction: column;
-  }
-
-  .stats {
-    grid-template-columns: 1fr;
-  }
-
-  .email-card {
-    grid-template-columns: 1fr;
-  }
-
-  .email-card .btn-primary {
-    width: 100%;
-  }
+  margin: 0.5rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.45;
 }
 
 .auth-form-section {
@@ -336,103 +853,153 @@ button:disabled {
 
 .auth-form-section h1 {
   margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
   text-align: center;
 }
 
+.auth-card form,
 .auth-form-section form {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-}
-
-.task-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-.status-badge {
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.status-badge.pending {
-  background: rgba(250, 204, 21, 0.15);
-  color: #facc15;
-  border: 1px solid rgba(250, 204, 21, 0.3);
-}
-
-.status-badge.completed {
-  background: rgba(34, 197, 94, 0.15);
-  color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.3);
-}
-
-.badge-group {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  flex-wrap: wrap;
-}
-
-.priority-badge {
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.priority-badge.high {
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-.priority-badge.medium {
-  background: rgba(250, 204, 21, 0.15);
-  color: #facc15;
-  border: 1px solid rgba(250, 204, 21, 0.3);
-}
-
-.priority-badge.low {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.3);
-}
-
-.filter-bar {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text);
-  padding: 0.45rem 0.85rem;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.filter-btn:hover {
-  background: var(--surface-hover);
-}
-
-.filter-btn.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
+  gap: 0.9rem;
 }
 
 .auth-divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1rem 0;
-  opacity: 0.7;
+  margin: 0.75rem 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-card);
+}
+
+.auth-divider span {
+  padding: 0 0.85rem;
+}
+
+.link-button {
+  background: transparent;
+  border: none;
+  color: var(--accent-lime);
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.45rem;
+  transition: all 0.2s ease;
+}
+
+.link-button:hover {
+  color: var(--accent-lime-hover);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES (Tablet & Mobile Adaptations)
+   ========================================================================== */
+
+/* Tablet (641px - 940px) */
+@media (max-width: 940px) {
+  .app-layout {
+    max-width: 720px;
+    margin: 2rem auto;
+    padding: 2rem 1.85rem;
+  }
+}
+
+/* Mobile Devices (<= 640px) */
+@media (max-width: 640px) {
+  body {
+    background-color: var(--bg-shell);
+  }
+
+  .app-layout {
+    max-width: 100%;
+    margin: 0;
+    padding: 1.25rem 1rem 3rem;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    gap: 1.25rem;
+  }
+
+  .auth-layout {
+    padding: 1rem;
+    align-items: flex-start;
+  }
+
+  .auth-card {
+    max-width: 100%;
+    border-radius: 24px;
+    padding: 1.75rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .dashboard-header .btn-secondary {
+    align-self: flex-start;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+
+  .email-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  .email-card .btn-primary {
+    width: 100%;
+  }
+
+  .task-form {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+  }
+
+  .task-form .btn-primary {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .task-list {
+    padding-left: 1.5rem;
+  }
+
+  .task-list::before {
+    left: 6px;
+  }
+
+  .task-card::before {
+    left: -1.5rem;
+  }
+
+  .task-card {
+    padding: 1.2rem 1.2rem;
+  }
 }
